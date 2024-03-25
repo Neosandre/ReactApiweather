@@ -13,12 +13,14 @@ import snow from "../assets/snow.png"
 
 export default function WeatherApp() {
 
+  let image= cloud;
 
   const [weather, setWeather] = useState({
     humidity:"64%",
       wind:"18",
       temp:"24",
-      location:"London"
+      location:"London",
+      img:image
   });
 
 const api_key = "d029b0e812afeb4013673ba6c07fa960";
@@ -41,14 +43,42 @@ const element= document.getElementsByClassName("cityInput");
       return location[0].innerHTML= data?.message;
     }
 
+if (data.weather[0].icon === "01d" || data.weather[0].icon === "01n" ){
 
+}
+
+switch(data.weather[0].icon) {
+  case "01d" || "01n":
+     image=clear;
+     break
+  case "02d" || "02n":
+     image=cloud
+     break
+  case "03d" || "03n":
+     image=drizle
+     break
+  case "04d" || "04n":
+     image=drizle
+     break
+  case "09d" || "09n":
+     image=rain
+     break
+  case "10d" || "10n":
+     image=cloud
+     break
+  case "13d" || "13n":
+     image=snow
+     break
+
+}
     
     console.log(data)
     setWeather({
     humidity:data?.main?.humidity,
-    wind:Math.round(data?.wind?.speed),
-    temp:Math.round(data?.main?.temp),
-    location:data?.name
+    wind:Math.floor(data?.wind?.speed),
+    temp:Math.floor(data?.main?.temp),
+    location:data?.name,
+    img:image
     
   })
   });
@@ -86,7 +116,7 @@ const element= document.getElementsByClassName("cityInput");
 
                {/* middle part */}
                <div className="weather-img">
-                <img src={cloud} alt="cloud" />
+                <img src={weather.img} alt="cloud" />
                </div>
                <div className="weather-temp">{weather.temp}°c</div>
                <div className="weather-location">{weather.location}</div>
